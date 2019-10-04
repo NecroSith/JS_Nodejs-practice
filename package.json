@@ -1,0 +1,14 @@
+{
+    "name": "node-practice",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/NecroSith/JS_Nodejs-prectice.git",
+    "author": "necrosith <necrosith@yandex.ru>",
+    "license": "MIT",
+    "devDependencies": {
+        "mongoose": "^5.7.3"
+    },
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
