@@ -1,4 +1,9 @@
 const express = require('express');
+
+// Include a joi library to properly handle input validation
+// result of require is class, that's why the variable name in PascalCase
+const Joi = require('joi');
+
 const app = express();
 
 // Enabling json parsing feature to be able to parse the request body. This feature is not enabled in Express by default
@@ -31,6 +36,28 @@ app.get('/api/courses/:id', (req, res) => {
 })
 
 app.post('/api/courses', (req, res) => {
+    // To use joi to validate input we should specify schema, i.e. properties of our input
+    const schema = {
+        name: Joi.string().min(3).required();
+    }
+
+    const result = Joi.validate(req.body, schema);
+    console.log(result);
+
+    if (!result.error) {
+        res.status(400).send(result.error.details[0].message);
+        return;
+    }
+
+    // if (!req.body.name || req.body.name.length < 3) {
+
+    // By ReSTful convention in case the client didn't provide a proper object or it doesn't satisfy certain conditions
+    // 400 Bad Request error should be given
+    // res.status(400).send('Name is required and should be at least 3 characters long');
+    // return;
+    // }
+
+
     const course = {
         id: courses.length + 1,
         name: req.body.name
@@ -45,3 +72,5 @@ app.listen(port, () => {
 });
 
 // TODO get a comparison between parseInt(), Number() and unary operator +
+
+// TODO install Postman extension for Chrome to be able to send requests manually anywhere
