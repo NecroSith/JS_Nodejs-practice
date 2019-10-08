@@ -10,6 +10,14 @@ const app = express();
 // * This is called a middleware function as all our requests pass through it
 app.use(express.json());
 
+// Built-in middleware function to pars incoming requests with urlencoded payloads
+// Like key=value
+// with extended: true we can pass objects and array in urlencoded format
+app.use(express.urlencoded({ extended: true }));
+
+// Built-in middleware function to serve static files
+// So it is accessible via localhost:3001/readme.txt
+app.use(express.static('public'));
 
 // We call a custom middleware function defined in external logger js file
 app.use(logger);
