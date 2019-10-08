@@ -1,4 +1,10 @@
+// * The more middleware functions are used the more it affects the performance - middleware function slow down request processing speed
 const express = require('express');
+
+// Third party middlewares
+const helmet = require('helmet');
+const morgan = require('morgan');
+
 const logger = require('./logger');
 // Include a joi library to properly handle input validation
 // result of require is class, that's why the variable name in PascalCase
@@ -19,8 +25,31 @@ app.use(express.urlencoded({ extended: true }));
 // So it is accessible via localhost:3001/readme.txt
 app.use(express.static('public'));
 
+// Third-party middleware to secure HTTP headers
+app.use(helmet());
+
+// The environment is stored in NODE_ENV which can be accessed via
+console.log(process.env.NODE_ENV);
+// We can set it in terminal by "export NODE_ENV=production"
+// Development, testing, staging and production options are available
+
+// By default it's set to development, we can also check it by calling app.get
+const env = app.get('env');
+
+// If env is set to development HTTP logging is enabled
+// There is no much sense to enable it in production but it will slow down request processing
+if (env === 'development') {
+    // Third party middleware to log HTTP requests
+    app.use(morgan('short'));
+    console.log('Morgan enabled')
+}
+
+
 // We call a custom middleware function defined in external logger js file
 app.use(logger);
+
+
+
 
 
 // Call environmental veriable to get port in case it's dynamic e.g. on a web hosting. Otherwise use port 3001
