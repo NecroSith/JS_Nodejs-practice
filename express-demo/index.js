@@ -1,5 +1,5 @@
 const express = require('express');
-
+const logger = require('./logger');
 // Include a joi library to properly handle input validation
 // result of require is class, that's why the variable name in PascalCase
 const Joi = require('joi');
@@ -7,7 +7,13 @@ const Joi = require('joi');
 const app = express();
 
 // Enabling json parsing feature to be able to parse the request body. This feature is not enabled in Express by default
+// * This is called a middleware function as all our requests pass through it
 app.use(express.json());
+
+
+// We call a custom middleware function defined in external logger js file
+app.use(logger);
+
 
 // Call environmental veriable to get port in case it's dynamic e.g. on a web hosting. Otherwise use port 3001
 // You can change PORT value by typing "export PORT=xxxx" in the command line
