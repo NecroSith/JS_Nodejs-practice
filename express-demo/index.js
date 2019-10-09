@@ -1,4 +1,8 @@
 // * The more middleware functions are used the more it affects the performance - middleware function slow down request processing speed
+
+// A package to control our process environment, all its assets are stored in config folder
+const config = require('config');
+
 const express = require('express');
 
 // Third party middlewares
@@ -27,6 +31,10 @@ app.use(express.static('public'));
 
 // Third-party middleware to secure HTTP headers
 app.use(helmet());
+
+console.log('App name: ' + config.get('name'));
+console.log('App mail: ' + config.get('mail.host'));
+console.log('Mail pass: ' + config.get('mail.password'));
 
 // The environment is stored in NODE_ENV which can be accessed via
 console.log(process.env.NODE_ENV);

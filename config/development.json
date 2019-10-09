@@ -1,0 +1,6 @@
+{
+    "name": "Express App - development build",
+    "mail": {
+        "host": "dev-mail-server"
+    }
+}

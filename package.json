@@ -9,6 +9,7 @@
         "mongoose": "^5.7.3"
     },
     "dependencies": {
+        "config": "^3.2.3",
         "express": "^4.17.1",
         "helmet": "^3.21.1",
         "joi": "^14.3.1",
