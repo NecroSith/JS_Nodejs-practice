@@ -1,5 +1,12 @@
 // * The more middleware functions are used the more it affects the performance - middleware function slow down request processing speed
 
+// Initialize debugger
+// Returns debugging function
+// To make them work we call "export DEBUG=app:startup" and it shows messages related to a specific namespace
+// Or use "export DEBUG=app*" to call all namespaces
+const startupDebugger = require('debug')('app:startup');
+const dbDebugger = require('debug')('app:db');
+
 // A package to control our process environment, all its assets are stored in config folder
 const config = require('config');
 
@@ -49,16 +56,12 @@ const env = app.get('env');
 if (env === 'development') {
     // Third party middleware to log HTTP requests
     app.use(morgan('short'));
-    console.log('Morgan enabled')
+    startupDebugger('Morgan enabled');
+    dbDebugger('Connecting to the database...');
 }
-
 
 // We call a custom middleware function defined in external logger js file
 app.use(logger);
-
-
-
-
 
 // Call environmental veriable to get port in case it's dynamic e.g. on a web hosting. Otherwise use port 3001
 // You can change PORT value by typing "export PORT=xxxx" in the command line
