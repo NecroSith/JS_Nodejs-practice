@@ -7,11 +7,33 @@ mongoose.connect('mongodb://localhost/test')
     .catch(err => console.log('Something went wrong:', err));
 
 const courseSchema = new mongoose.Schema({
-    name: { type: String, required: true }
+    name: {
+        type: String,
+        required: true,
+        minlength: 3,
+        maxlength: 255
+    },
+    category: {
+        type: String,
+        // when validating a script 
+        // if the item doesn't have at least one of the categories
+        // there will be a validation error
+        enum: ['web', 'mobile', 'network']
+    },
     author: String,
     tags: [String],
     date: { type: Date, default: Date.now },
-    isPublished: Boolean
+    isPublished: Boolean,
+    // Price will be required if the course is published
+    // * No arrow functions here!
+    price: {
+        type: Number,
+        required: function() {
+            this.isPublished;
+        },
+        min: 10,
+        max: 1000
+    }
 });
 
 const Course = mongoose.model('Course', courseSchema);
@@ -19,10 +41,12 @@ const Course = mongoose.model('Course', courseSchema);
 
 async function createCourse() {
     const course = new Course({
-        // name: 'Angular Course',
+        name: 'Angular Course',
+        category: '-',
         author: 'Mosh',
         tags: ['angular', 'frontend'],
-        isPublished: true
+        isPublished: true,
+        price: 666
     });
 
     // If you don't have a valid course data, e.g. course without name
