@@ -11,21 +11,33 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: 3,
-        maxlength: 255
+        maxlength: 255,
+        // match: /pattern/
     },
     category: {
         type: String,
-        // when validating a script 
-        // if the item doesn't have at least one of the categories
-        // there will be a validation error
         enum: ['web', 'mobile', 'network']
     },
     author: String,
-    tags: [String],
+    // Here goes custom async validator
+    // to ensure that the user passes unempty array
+    tags: {
+        type: Array,
+        validate: {
+            // Here we make sure that the code is asynchronos
+            isAsync: true,
+            validator: function(value, callback) {
+                setTimeout(() => {
+                    // Some async stuff going on here
+                    const result = value && value.length > 0;
+                    callback(result);
+                }, 4000)
+            },
+            message: 'A course should have at least one tag'
+        }
+    },
     date: { type: Date, default: Date.now },
     isPublished: Boolean,
-    // Price will be required if the course is published
-    // * No arrow functions here!
     price: {
         type: Number,
         required: function() {
@@ -42,21 +54,16 @@ const Course = mongoose.model('Course', courseSchema);
 async function createCourse() {
     const course = new Course({
         name: 'Angular Course',
-        category: '-',
+        category: 'web',
         author: 'Mosh',
-        tags: ['angular', 'frontend'],
+        tags: [],
         isPublished: true,
         price: 666
     });
 
-    // If you don't have a valid course data, e.g. course without name
-    // this will catch it
     try {
         const result = await course.save();
         console.log(result);
-
-        // You can also trigger validation manually
-        //await course.validate();
     } catch (err) {
         console.log(err.message);
     }
