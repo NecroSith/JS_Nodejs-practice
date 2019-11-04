@@ -16,7 +16,10 @@ const courseSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        enum: ['web', 'mobile', 'network']
+        enum: ['web', 'mobile', 'network'],
+        required: true,
+        lowercase: true,
+        trim: true
     },
     author: String,
     // Here goes custom async validator
@@ -44,7 +47,11 @@ const courseSchema = new mongoose.Schema({
             this.isPublished;
         },
         min: 10,
-        max: 1000
+        max: 1000,
+        // getter is called each time price is called
+        // getter is useful if we have a document in db with not rounded data before we made this functionality
+        get: v => Math.round(v),
+        set: v => Math.round(v)
     }
 });
 
@@ -54,9 +61,9 @@ const Course = mongoose.model('Course', courseSchema);
 async function createCourse() {
     const course = new Course({
         name: 'Angular Course',
-        category: 'web',
+        category: 'WEB',
         author: 'Mosh',
-        tags: [],
+        tags: ['frontend'],
         isPublished: true,
         price: 666
     });
@@ -64,8 +71,12 @@ async function createCourse() {
     try {
         const result = await course.save();
         console.log(result);
+        // we iterate through all error properties
     } catch (err) {
-        console.log(err.message);
+        for (const field in err.errors) {
+            // remove .message to get full error object
+            console.log(err.errors[field]).message;
+        }
     }
 
 }
