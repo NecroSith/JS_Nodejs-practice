@@ -15,16 +15,16 @@ const Author = mongoose.model('Author', authorSchema);
 const Course = mongoose.model('Course', new mongoose.Schema({
     name: String,
     // We embed a schema into a schema thus making a reference to it
-    author: {
-        type: authorSchema,
+    authors: {
+        type: [authorSchema],
         required: true
     }
 }));
 
-async function createCourse(name, author) {
+async function createCourse(name, authors) {
     const course = new Course({
         name,
-        author
+        authors
     });
 
     const result = await course.save();
@@ -34,6 +34,19 @@ async function createCourse(name, author) {
 async function listCourses() {
     const courses = await Course.find();
     console.log(courses);
+}
+
+async function addAuthor(courseId, author) {
+    const course = await Course.findById(courseId);
+    course.authors.push(author);
+    course.save();
+}
+
+async function removeAuthor(courseId, authorId) {
+    const course = await Course.findById(courseId);
+    const author = course.authors.id(authorId);
+    author.remove();
+    course.save();
 }
 
 async function updateAuthor(courseId) {
@@ -47,5 +60,12 @@ async function updateAuthor(courseId) {
     });
 }
 
-// createCourse('Node Course', new Author({ name: 'Mosh' }));
-updateAuthor('5dc862cf63a6471590bc6c9d');
+// We can use an array to have multiple authors
+// createCourse('Node Course', [
+//     new Author({ name: 'Mosh' }),
+//     new Author({ name: 'Yan' })
+// ]);
+
+// updateAuthor('5dcb0229c6fe622760526714');
+// addAuthor('5dcb0229c6fe622760526714', new Author({ name: 'Alex' }));
+removeAuthor('5dcb0229c6fe622760526714', '5dcb02678041a413c41fad2f');
