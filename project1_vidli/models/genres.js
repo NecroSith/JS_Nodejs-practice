@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const express = require('express');
 const Joi = require('joi');
 
 const genreSchema = new mongoose.Schema({
@@ -13,10 +12,8 @@ const genreSchema = new mongoose.Schema({
 
 const Genre = mongoose.model('Genre', genreSchema);
 
-
-
 function validateInput(input) {
-    schema = {
+    const schema = {
         name: Joi.string().min(5).required()
     };
 

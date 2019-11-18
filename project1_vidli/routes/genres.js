@@ -20,10 +20,12 @@ router.get('/:id', async(req, res) => {
 router.post('/', async(req, res) => {
     const { error } = validate(req.body);
     if (error) {
-        return res.status(400).send(error.details[0].message);
+        return res.status(400).send(error.details);
     }
 
-    let genre = new Genre({
+    console.log(req.body);
+
+    let genre = await new Genre({
         name: req.body.name
     });
 
