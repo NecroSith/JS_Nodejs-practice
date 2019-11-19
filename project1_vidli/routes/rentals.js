@@ -1,8 +1,12 @@
 const { Rental, validate } = require('../models/rentals');
 const { Movie } = require('../models/movies');
 const { Customer } = require('../models/customer');
+// package required for two phase commits
+const Fawn = require('fawn');
 const express = require('express');
 const router = express.Router();
+
+Fawn.init(mongoose);
 
 router.get('/', async(req, res) => {
     const rentals = await Rental.find().sort('-dateOut');
@@ -41,12 +45,27 @@ router.post('/', async(req, res) => {
         }
     });
 
-    rental = await rental.save();
+    // run our transaction
+    // as chain of events
+    try {
+        new Fawn.Task()
+            .save('rentals', rental)
+            .update('movies', { _id: movie._id }, {
+                $inc: { numberInStock: -1 }
+            })
+            .run()
 
-    movie.numberInStock--;
-    movie.save();
+        res.send(rental);
+    } catch (ex) {
+        res.status(500).send('Something failed');
+    }
 
-    res.send(rental);
+    // With Fawn we don't need these
+    // rental = await rental.save();
+    // movie.numberInStock--;
+    // movie.save();
+
+
 
 });
 

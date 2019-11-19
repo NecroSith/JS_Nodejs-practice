@@ -12,7 +12,7 @@ router.get('/:id', async(req, res) => {
     const movie = await Movie.findById(req.params.id);
 
     if (!movie) {
-        return res.status(404).send('The genre with the given id could not be found');
+        return res.status(404).send('The movie with the given id could not be found');
     }
 
     res.send(movie);
@@ -55,7 +55,7 @@ router.put('/:id', async(req, res) => {
     const movie = await Movie.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
 
     if (!movie) {
-        return res.status(404).send('The genre with the given id could not be found');
+        return res.status(404).send('The movie with the given id could not be found');
     }
 
     res.send(movie);

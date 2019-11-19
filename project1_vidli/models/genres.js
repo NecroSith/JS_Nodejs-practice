@@ -20,5 +20,6 @@ function validateInput(input) {
     return Joi.validate(input, schema);
 }
 
+module.exports.genreSchema = genreSchema;
 module.exports.Genre = Genre;
 module.exports.validate = validateInput;
