@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
 
+// Here is the use of a special package of Joi
+// It's designed to validate object Ids
+Joi.objectId = require('joi-objectid')(Joi);
+
+
 const rentalsSchema = new mongoose.Schema({
     title: {
         type: String,
@@ -71,8 +76,8 @@ const Rental = mongoose.model('Rental', rentalsSchema);
 // we don't want user to mess with dates -they must be set server-side
 function validateInput(input) {
     const schema = {
-        customerId: Joi.string().required(),
-        movieId: Joi.string().required()
+        customerId: Joi.objectId().required(),
+        movieId: Joi.objectId().required()
     };
 
     return Joi.validate(input, schema);

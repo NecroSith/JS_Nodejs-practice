@@ -21,13 +21,16 @@ router.post('/', async(req, res) => {
     }
 
     const customer = await Customer.findById(req.body.customerId);
-    if (!customer) {
+    // One way to handle incorrect ids is this
+    // another way is to use Joi-objectid package
+    // and modify validate function using it
+    if (!customer || !mongoose.Types.ObjectId(req.body.customerId)) {
         return res.status(400).send('Invalid customer');
     }
 
     // We want to check if the genre is valid
     const movie = await Movie.findById(req.body.movieId);
-    if (!movie) {
+    if (!movie || !mongoose.Types.ObjectId(req.body.movieId)) {
         return res.status(400).send('Invalid movie');
     }
 
