@@ -1,6 +1,7 @@
 const { Rental, validate } = require('../models/rentals');
 const { Movie } = require('../models/movies');
 const { Customer } = require('../models/customer');
+const mongoose = require('mongoose');
 // package required for two phase commits
 const Fawn = require('fawn');
 const express = require('express');
@@ -19,13 +20,13 @@ router.post('/', async(req, res) => {
         return res.status(400).send(error.details);
     }
 
-    const customer = await Customer.findById(req.params.customerId);
+    const customer = await Customer.findById(req.body.customerId);
     if (!customer) {
         return res.status(400).send('Invalid customer');
     }
 
     // We want to check if the genre is valid
-    const movie = await Movie.findById(req.params.genreId);
+    const movie = await Movie.findById(req.body.movieId);
     if (!movie) {
         return res.status(400).send('Invalid movie');
     }
@@ -47,6 +48,10 @@ router.post('/', async(req, res) => {
 
     // run our transaction
     // as chain of events
+    // 1 - we create a task to initialize the sequence of operations
+    // 2 - then we save our rental model
+    // 3 - then we update movies model and movie with the provided id, we decrement its numberInStock value
+    // 4 - we run the task
     try {
         new Fawn.Task()
             .save('rentals', rental)

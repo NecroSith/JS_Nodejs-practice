@@ -25,7 +25,7 @@ router.post('/', async(req, res) => {
     }
 
     // We want to check if the genre is valid
-    const genre = await Genre.findById(req.params.genreId);
+    const genre = await Genre.findById(req.body.genreId);
     if (!genre) {
         return res.status(400).send('Invalid genre');
     }

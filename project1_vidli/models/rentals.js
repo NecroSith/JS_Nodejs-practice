@@ -65,7 +65,7 @@ const rentalsSchema = new mongoose.Schema({
     }
 });
 
-const Rental = mongoose.model('Movie', rentalsSchema);
+const Rental = mongoose.model('Rental', rentalsSchema);
 
 // We validate only two values because
 // we don't want user to mess with dates -they must be set server-side
