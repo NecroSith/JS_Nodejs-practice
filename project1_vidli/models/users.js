@@ -29,7 +29,7 @@ function validateInput(input) {
     const schema = {
         name: Joi.string().min(5).max(50).required(),
         email: Joi.string().min(5).max(1024).required().email(),
-        name: Joi.string().min(5).max(255).required()
+        password: Joi.string().min(5).max(255).required()
     };
 
     return Joi.validate(input, schema);
