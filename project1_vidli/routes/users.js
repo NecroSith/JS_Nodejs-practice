@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const { User, validate } = require('../models/users');
 const express = require('express');
 const router = express.Router();
@@ -14,14 +15,26 @@ router.post('/', async(req, res) => {
         return res.status(400).send('User already registered');
     }
 
-    user = new User({
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password
-    });
+    // user = new User({
+    //     name: req.body.name,
+    //     email: req.body.email,
+    //     password: req.body.password
+    // });
+
+    user = new User(_.pick(req.body, ['name', 'email', 'password']));
 
     await user.save();
-    res.send(user);
+
+    // pick method of Lodash watches the object
+    // and pull out only the proprties specified in square brackets
+    res.send(_.pick(user, ['_id', 'name', 'email']));
+
+    // Alternatively, without Lodash we can use
+    // res.send({
+    //     _id: user._id, 
+    //     name: user.name,
+    //     email: user.email
+    // });
 
 });
 
