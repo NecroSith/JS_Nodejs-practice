@@ -9,6 +9,7 @@
         "mongoose": "^5.7.6"
     },
     "dependencies": {
+        "bcryptjs": "^2.4.3",
         "config": "^3.2.3",
         "debug": "^4.1.1",
         "express": "^4.17.1",
