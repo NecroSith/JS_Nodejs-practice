@@ -10,7 +10,7 @@
     },
     "dependencies": {
         "bcryptjs": "^2.4.3",
-        "config": "^3.2.3",
+        "config": "^3.2.4",
         "debug": "^4.1.1",
         "express": "^4.17.1",
         "fawn": "^2.1.5",
