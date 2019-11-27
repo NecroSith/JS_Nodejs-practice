@@ -1,3 +1,7 @@
+// library to manage json web tokens 
+// they are used to store user data upon server request
+const jwt = require('jsonwebtoken');
+
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const _ = require('lodash');
@@ -25,7 +29,12 @@ router.post('/', async(req, res) => {
         return res.status(400).send('Invalid email or password');
     }
 
-    res.send(true);
+    // sign method generates a jsonwebtoken
+    // argument 1 is payload of the token which typically contains user id and some other useful data
+    // argument 2 is private key, our digital signature
+    const token = jwt.sign({ _id: user._id }, 'privateKey');
+
+    res.send(token);
 
 });
 
