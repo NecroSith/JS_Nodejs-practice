@@ -1,4 +1,6 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const _ = require('lodash');
 const { User, validate } = require('../models/users');
 const express = require('express');
@@ -23,9 +25,14 @@ router.post('/', async(req, res) => {
 
     await user.save();
 
+    // const token = jwt.sign({ _id: user._id }, config.get('jwtPrivateKey'));
+    const token = user.generateAuthToken();
+
+
     // pick method of Lodash watches the object
     // and pull out only the proprties specified in square brackets
-    res.send(_.pick(user, ['_id', 'name', 'email']));
+    res.header('x-auth-token', token).send(_.pick(user, ['_id', 'name', 'email']));
+    // we also use header to send response headers with ou private key
 });
 
 module.exports = router;
