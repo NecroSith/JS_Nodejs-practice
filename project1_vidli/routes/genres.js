@@ -1,3 +1,4 @@
+const auth = require('../middleware/auth');
 const { Genre, validate } = require('../models/genres');
 const express = require('express');
 const router = express.Router();
@@ -17,13 +18,13 @@ router.get('/:id', async(req, res) => {
     res.send(genre);
 });
 
-router.post('/', async(req, res) => {
+// Argument 2 is a middleware function
+// It is executed before the function itself
+router.post('/', auth, async(req, res) => {
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details);
     }
-
-    console.log(req.body);
 
     let genre = await new Genre({
         name: req.body.name
@@ -34,7 +35,7 @@ router.post('/', async(req, res) => {
 
 });
 
-router.put('/:id', async(req, res) => {
+router.put('/:id', auth, async(req, res) => {
 
     const { error } = validate(req.body);
     if (error) {
@@ -50,7 +51,7 @@ router.put('/:id', async(req, res) => {
     res.send(genre);
 });
 
-router.delete('/:id', async(req, res) => {
+router.delete('/:id', auth, async(req, res) => {
     const { error } = validate(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
