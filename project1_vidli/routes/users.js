@@ -40,3 +40,9 @@ router.post('/', async(req, res) => {
 });
 
 module.exports = router;
+
+
+// To implement loggin out user functionality we need to do this on client side
+// To log out user we can simply delete their auth web token
+//* it's a big no-no to store client auth web token server side because if someone hacks your db and get their hands on auth tokens they will get full access to every piece of data you have without need of password or id
+// Deleting auth tokens and logging out are implemented client side
