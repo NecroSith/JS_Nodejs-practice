@@ -4,18 +4,26 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    const customers = await Customer.find().sort('name');
-    res.send(customers);
+    try {
+        const customers = await Customer.find().sort('name');
+        res.send(customers);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
 });
 
 router.get('/:id', async(req, res) => {
-    const customer = await Customer.findById(req.params.id);
+    try {
+        const customer = await Customer.findById(req.params.id);
 
-    if (!customer) {
-        return res.status(404).send('The genre with the given id could not be found');
+        if (!customer) {
+            return res.status(404).send('The genre with the given id could not be found');
+        }
+
+        res.send(customer);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
     }
-
-    res.send(customer);
 });
 
 router.post('/', auth, async(req, res) => {

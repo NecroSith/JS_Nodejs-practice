@@ -5,18 +5,26 @@ const express = require('express');
 const router = express.Router();
 
 router.get('/', async(req, res) => {
-    const movies = await Movie.find().sort('name');
-    res.send(movies);
+    try {
+        const movies = await Movie.find().sort('name');
+        res.send(movies);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
+    }
 });
 
 router.get('/:id', async(req, res) => {
-    const movie = await Movie.findById(req.params.id);
+    try {
+        const movie = await Movie.findById(req.params.id);
 
-    if (!movie) {
-        return res.status(404).send('The movie with the given id could not be found');
+        if (!movie) {
+            return res.status(404).send('The movie with the given id could not be found');
+        }
+
+        res.send(movie);
+    } catch (ex) {
+        res.status(500).send('Something went wrong');
     }
-
-    res.send(movie);
 });
 
 router.post('/', auth, async(req, res) => {
