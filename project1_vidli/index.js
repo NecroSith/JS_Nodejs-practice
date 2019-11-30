@@ -9,6 +9,7 @@ const movies = require('./routes/movies');
 const rentals = require('./routes/rentals');
 const users = require('./routes/users.js');
 const auth = require('./routes/auth');
+const error = require('./middleware/error');
 const app = express();
 
 if (!config.get("jwtPrivateKey")) {
@@ -30,6 +31,9 @@ app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/users', users);
 app.use('/api/auth', auth);
+
+// Error handing middleware function
+app.use(error)
 
 const port = process.env.PORT || 3001;
 
