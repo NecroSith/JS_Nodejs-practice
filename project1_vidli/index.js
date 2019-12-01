@@ -1,3 +1,9 @@
+// Before all other routers error handling middleware should be declared
+// so it can wrap each request in error handler during runtime
+// therefore there is no need to do anything for the dev
+require('express-async-errors');
+
+
 const config = require('config');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);

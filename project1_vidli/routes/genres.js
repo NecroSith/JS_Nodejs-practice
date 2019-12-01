@@ -3,12 +3,20 @@ const admin = require('../middleware/admin');
 const { Genre, validate } = require('../models/genres');
 const express = require('express');
 const router = express.Router();
-const asyncMiddleware = require('../middleware/async');
 
-router.get('/', asyncMiddleware(async(req, res) => {
+//* We can use this asyncMiddleware function but there is a need to write this asyncMiddleware call in each router which makes code more messy
+//* Alternatively we used express-async-errors package to do the same job during runtime without any additional code
+// const asyncMiddleware = require('../middleware/async');
+
+// router.get('/', asyncMiddleware(async(req, res) => {
+//     const genres = await Genre.find().sort('name');
+//     res.send(genres);
+// }));
+
+router.get('/', async(req, res) => {
     const genres = await Genre.find().sort('name');
     res.send(genres);
-}));
+});
 
 router.get('/:id', async(req, res) => {
     const genre = await Genre.findById(req.params.id);
