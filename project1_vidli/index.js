@@ -12,15 +12,10 @@ Joi.objectId = require('joi-objectid')(Joi);
 const mongoose = require('mongoose');
 const express = require('express');
 
-const genres = require('./routes/genres');
-const customers = require('./routes/customer');
-const movies = require('./routes/movies');
-const rentals = require('./routes/rentals');
-const users = require('./routes/users.js');
 
-const auth = require('./routes/auth');
-const error = require('./middleware/error');
 const app = express();
+
+require('./startup/routes')(app);
 
 // proces listener to handle errors not located in request handlers
 process.on('uncaughtException', ex => {
@@ -57,8 +52,8 @@ winston.add(new winston.transports.MongoDB({ db: 'mongodb://localhost/vidli' }))
 // because it is outside express scope (outside request handlers)
 // throw new Error('Something failed in the startup!');
 
-const p = Promise.reject('Something broke!!');
-p.then(() => console.log('Done');)
+// const p = Promise.reject('Something broke!!');
+// p.then(() => console.log('Done'))
 
 if (!config.get("jwtPrivateKey")) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined');
@@ -72,16 +67,6 @@ mongoose.connect('mongodb://localhost/vidli')
     .then(() => console.log('Connected to Mongo DB...'))
     .catch(err => console.error('Error connecting to MongoDB...', err));
 
-app.use(express.json());
-app.use('/api/genres', genres);
-app.use('/api/customers', customers);
-app.use('/api/movies', movies);
-app.use('/api/rentals', rentals);
-app.use('/api/users', users);
-app.use('/api/auth', auth);
-
-// Error handing middleware function
-app.use(error)
 
 const port = process.env.PORT || 3001;
 
