@@ -9,15 +9,15 @@ require('winston-mongodb');
 const config = require('config');
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
-const mongoose = require('mongoose');
 const express = require('express');
 
 
 const app = express();
 
 require('./startup/routes')(app);
+require('./startup/db')();
 
-// proces listener to handle errors not located in request handlers
+// process listener to handle errors not located in request handlers
 process.on('uncaughtException', ex => {
     console.log('Uncaught exception!!!');
     winston.error(ex.message, ex);
@@ -62,10 +62,6 @@ if (!config.get("jwtPrivateKey")) {
     // anything except 0 means error so I used 1 here
     process.exit(1);
 }
-
-mongoose.connect('mongodb://localhost/vidli')
-    .then(() => console.log('Connected to Mongo DB...'))
-    .catch(err => console.error('Error connecting to MongoDB...', err));
 
 
 const port = process.env.PORT || 3001;
