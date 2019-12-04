@@ -6,6 +6,7 @@
     "author": "necrosith <necrosith@yandex.ru>",
     "license": "MIT",
     "devDependencies": {
+        "jest": "^24.9.0",
         "mongoose": "^5.7.6"
     },
     "dependencies": {
@@ -25,5 +26,8 @@
         "pug": "^2.0.4",
         "winston": "^3.2.1",
         "winston-mongodb": "^5.0.1"
+    },
+    "scripts": {
+        "test": "jest"
     }
 }
