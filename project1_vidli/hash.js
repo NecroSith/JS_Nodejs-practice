@@ -13,8 +13,6 @@ async function run() {
     const hashed = await bcrypt.hash('1234', salt);
     console.log(salt);
     console.log(hashed);
-
-
 }
 
 run();
