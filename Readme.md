@@ -15,14 +15,14 @@
 - **joi-password-complexity** (for better validating and securing user passwords)
 
 #### Logging and error handing
-- winston (for logging info and error in file)
-- winston-mongodb (for logging info and error in a separate collection in MongoDB)
-- express-async-errors (for catching promises error and such)
+- **winston** (for logging info and error in file)
+- **winston-mongodb** (for logging info and error in a separate collection in MongoDB)
+- **express-async-errors** (for catching promises error and such)
 
 #### Security
-- config (for managing environmetal variables depending on the environment)
-- jsonwebtoken (for managing jsonwebtokens in the app)
-- bcryptjs (for encrypting data that pass to the db and back)
+- **config** (for managing environmetal variables depending on the environment)
+- **jsonwebtoken** (for managing jsonwebtokens in the app)
+- **bcryptjs** (for encrypting data that pass to the db and back)
 
 #### Unit testing
 - **Jest**
