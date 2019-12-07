@@ -1,4 +1,6 @@
 const lib = require('../lib');
+const db = require('../db');
+const mail = require('../mail');
 
 describe('absolute', () => {
     it('should return a positive number in the input is positive', () => {
@@ -80,5 +82,40 @@ describe('registerUser', () => {
         const result = lib.registerUser('Yan');
         expect(result).toMatchObject({ username: 'Yan' });
         expect(result.id).toBeGreaterThan(0);
+    });
+});
+
+
+describe('applyDiscount', () => {
+    it('should apply discount if objects are more that 10', () => {
+        // to test this we need a mock function
+        // which mocks behavoiur of a real function called in applyDiscount
+        db.getCustomerSync = function(customerId) {
+            console.log('fake reading customer');
+            return { id: customerId, points: 20 }
+        }
+        const order = { customerId: 1, totalPrice: 10 }
+        lib.applyDiscount(order);
+        expect(order.totalPrice).toBe(9);
+
+    });
+});
+
+describe('notifyCustomer', () => {
+    it('should send an email to the customer', () => {
+        db.getCustomerSync = function(customerId) {
+            return {
+                email: 'a'
+            }
+        };
+
+        let mailSent = false;
+        // we do nothing with arguments here because we want to test interaction with two functions
+        // we don't need to test mail.send function here
+        mail.send = function(email, message) {
+            mailSent = true;
+        }
+        lib.notifyCustomer({ customerId: 1 });
+        expect(mailSent).toBe(true);
     });
 });
