@@ -118,4 +118,20 @@ describe('notifyCustomer', () => {
         lib.notifyCustomer({ customerId: 1 });
         expect(mailSent).toBe(true);
     });
+
+    it('should send an email to the customer (with jest mock functions)', () => {
+        // here we use built-in jest function to mock functions
+        db.getCustomerSync = jest.fn().mockReturnValue({ email: 'a' })
+        mail.send = jest.fn();
+
+        lib.notifyCustomer({ customerId: 1 });
+
+        expect(mail.send).toHaveBeenCalled();
+        // calls method keeps track of all the calls to this function
+        // this is an array so we access the first element, whcih is the first call to this function
+        // it returns an array of arguments so we check the first
+        expect(mail.send.mock.calls[0][0]).toBe('a');
+        // and the second
+        expect(mail.send.mock.calls[0][1]).toMatch(/order/);
+    });
 });
