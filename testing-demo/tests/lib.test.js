@@ -59,4 +59,26 @@ describe('getProduct', () => {
         // econd ideal way but it can only check 1 property at a time
         expect(result).toHaveProperty('id', 1);
     })
-})
+});
+
+describe('registerUser', () => {
+    it('should throw an ex if username is falsy', () => {
+        //we need to assure that function throws an exeptiob if username is
+        // null
+        // undefined
+        // ''
+        // false
+        // NaN
+        // 0
+        const args = [null, undefined, NaN, '', 0, false];
+        args.forEach(arg => {
+            expect(() => { lib.registerUser(arg) }).toThrow();
+        });
+    });
+
+    it('should return a user object if valid username is passed', () => {
+        const result = lib.registerUser('Yan');
+        expect(result).toMatchObject({ username: 'Yan' });
+        expect(result.id).toBeGreaterThan(0);
+    });
+});
