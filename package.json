@@ -28,6 +28,6 @@
         "winston-mongodb": "^5.0.1"
     },
     "scripts": {
-        "test": "jest --watchAll"
+        "test": "jest --watchAll --verbose"
     }
 }

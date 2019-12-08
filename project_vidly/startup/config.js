@@ -11,8 +11,7 @@ module.exports = function() {
     if (!config.get("jwtPrivateKey")) {
         // as a best practice make error messages object
         // if you return a string you can't have a stacktrace in error handler
-        throw new Error({ 'FATAL ERROR: jwtPrivateKey is not defined' });
-
+        throw new Error('FATAL ERROR: jwtPrivateKey is not defined');
         // Closes the process of the app
         // anything except 0 means error so I used 1 here
         // process.exit(1);

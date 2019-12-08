@@ -3,7 +3,7 @@
 // therefore there is no need to do anything for the dev
 require('express-async-errors');
 const winston = require('winston');
-require('winston-mongodb');
+// require('winston-mongodb');
 
 module.exports = function() {
     // process listener to handle errors not located in request handlers
@@ -23,7 +23,7 @@ module.exports = function() {
                 winston.format.simple()
             )
         }),
-        new winston.transports.File({ filename: 'project1_vidli/uncaughtExceptions.log' }))
+        new winston.transports.File({ filename: 'project_vidly/uncaughtExceptions.log' }))
 
     // Process listener to handle errors in promises in runtime
     // process.on('unhandledRejection', ex => {
@@ -39,11 +39,11 @@ module.exports = function() {
     });
 
     // store logs in file
-    winston.add(new winston.transports.File({ filename: 'project1_vidli/logfile.log' }));
+    winston.add(new winston.transports.File({ filename: 'project_vidly/logfile.log' }));
 
     // store logs in mongodb itself
-    winston.add(new winston.transports.MongoDB({
-        db: 'mongodb://localhost/vidli',
-        level: 'info'
-    }));
+    // winston.add(new winston.transports.MongoDB({
+    //     db: 'mongodb://localhost/vidli',
+    //     level: 'info'
+    // }));
 }
