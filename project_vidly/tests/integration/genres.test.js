@@ -11,22 +11,30 @@ describe('/api/genres', () => {
     });
 
     // afterEach is called after each test, obviously
-    afterEach(() => {
+    afterEach(async() => {
         // shutting down the server
         server.close();
+
+        // cleaning up test DB
+        await Genre.remove({});
     });
     describe('GET /', () => {
         it('should return all genres', async() => {
             // Populating test DB with test data
             await Genre.collection.insertMany([
-                    { name: 'genre1' },
-                    { name: 'genre2' },
-                    { name: 'genre3' },
-                ])
-                // request simulates request to the server
+                { name: 'genre1' },
+                { name: 'genre2' },
+                { name: 'genre3' },
+            ]);
+            // request simulates request to the server
             const res = await request(server).get('/api/genres');
             expect(res.status).toBe(200);
             expect(res.body.length).toBe(3);
+
+            // Check if there are genres in the response
+            expect(res.body.some(g => g.name === 'genre1')).toBeTruthy();
+            expect(res.body.some(g => g.name === 'genre2')).toBeTruthy();
+            expect(res.body.some(g => g.name === 'genre3')).toBeTruthy();
         });
     });
 });
