@@ -1,5 +1,7 @@
 // supertest is needed to simulate requests
 const request = require('supertest');
+const { Genre } = require('../../models/genres');
+
 let server;
 
 describe('/api/genres', () => {
@@ -15,9 +17,16 @@ describe('/api/genres', () => {
     });
     describe('GET /', () => {
         it('should return all genres', async() => {
-            // request simulates request to the server
+            // Populating test DB with test data
+            await Genre.collection.insertMany([
+                    { name: 'genre1' },
+                    { name: 'genre2' },
+                    { name: 'genre3' },
+                ])
+                // request simulates request to the server
             const res = await request(server).get('/api/genres');
             expect(res.status).toBe(200);
+            expect(res.body.length).toBe(3);
         });
     });
 });
