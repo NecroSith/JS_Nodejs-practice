@@ -48,9 +48,15 @@ describe('/api/genres', () => {
             expect(res.status).toBe(200);
 
             // this will fail because jest stores id as array of numbers but mongo - as a string
-            expect(res.body).toMatchObject(genre);
+            // expect(res.body).toMatchObject(genre);
 
-            // expect(res.body).toHaveProperty('name', genre.name);
+            expect(res.body).toHaveProperty('name', genre.name);
+        });
+
+        it('should return 404 if invalid id is passed', async() => {
+            const res = await request(server).get('/api/genres/1').catch(e => expect(res.status).toBe(404))
+
+
         });
     });
 });
