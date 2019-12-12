@@ -2,6 +2,9 @@
 const request = require('supertest');
 const { Genre } = require('../../models/genres');
 
+const mongoose = require('mongoose');
+const { User } = require('../../models/users');
+
 let server;
 
 describe('/api/genres', () => {
@@ -55,8 +58,40 @@ describe('/api/genres', () => {
 
         it('should return 404 if invalid id is passed', async() => {
             const res = await request(server).get('/api/genres/1').catch(e => expect(res.status).toBe(404))
+        });
+    });
 
+    describe('POST /', () => {
+        it('should return 401 if client is not logged in', async() => {
+            const res = await request(server)
+                .post('/api/genres')
+                .send({ name: 'genre1' });
 
+            expect(res.status).toBe(401);
+        });
+
+        it('should return 400 if genre is less than 5 characters long', async() => {
+            const token = new User().generateAuthToken();
+
+            const res = await request(server)
+                .post('/api/genres')
+                .set('x-auth-token', token)
+                .send({ name: 'genr' });
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if genre is more than 50 characters long', async() => {
+            const token = new User().generateAuthToken();
+
+            const res = await request(server)
+                .post('/api/genres')
+                .set('x-auth-token', token)
+                // we need a string of 5 character
+                // it will be array of 52 empty elements with 'w' between them
+                .send({ name: new Array(52).join('w') });
+
+            expect(res.status).toBe(400);
         });
     });
 });
