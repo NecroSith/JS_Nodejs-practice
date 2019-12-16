@@ -26,3 +26,6 @@
 
 #### Unit testing
 - **Jest**
+
+#### Integraton testing
+- **supertest**
