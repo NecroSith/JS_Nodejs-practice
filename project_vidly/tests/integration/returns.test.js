@@ -1,4 +1,6 @@
+const request = require('supertest');
 const { Rental } = require('../../models/rentals');
+const { User } = require('../../models/users');
 const mongoose = require('mongoose');
 
 describe('/api/returns', () => {
@@ -31,13 +33,33 @@ describe('/api/returns', () => {
     });
 
     afterEach(async() => {
-        server.close();
+        await server.close();
         await Rental.remove({});
     });
 
-    it('should work', async() => {
-        const res = await Rental.findById(rental._id);
+    describe('POST /api/returns', async() => {
+        // let token;
 
-        expect(res).not.toBeNull();
+        const exec = async() => {
+            return await request(server)
+                .post('/api/returns')
+                // .set('x-auth-token', token)
+                .send({
+                    customerId,
+                    movieId
+                });
+        }
+
+        beforeEach(() => {
+            // token = new User().generateAuthToken();
+        });
+
+        it('should return 401 if client is not logged in', async() => {
+            // token = '';
+
+            const res = await exec();
+
+            expect(res.status).toBe(401);
+        });
     });
 });

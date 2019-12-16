@@ -16,7 +16,7 @@ describe('/api/genres', () => {
     // afterEach is called after each test, obviously
     afterEach(async() => {
         // shutting down the server
-        server.close();
+        await server.close();
 
         // cleaning up test DB
         await Genre.remove({});
