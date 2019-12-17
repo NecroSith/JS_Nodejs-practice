@@ -24,7 +24,7 @@
 - **jsonwebtoken** (for managing jsonwebtokens in the app)
 - **bcryptjs** (for encrypting data that pass to the db and back)
 
-#### Unit testing
+#### Unit and integration testing
 - **Jest**
 
 #### Integraton testing
