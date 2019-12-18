@@ -61,5 +61,39 @@ describe('/api/returns', () => {
 
             expect(res.status).toBe(401);
         });
+
+        it('should return 400 if customerId not provided', async() => {
+            token = new User().generateAuthToken();
+
+            const res = await request(server)
+                .post('/api/returns')
+                .set('x-auth-token', token)
+                .send({
+                    movieId
+                });;
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return 400 if movieId not provided', async() => {
+            token = new User().generateAuthToken();
+
+            const res = await request(server)
+                .post('/api/returns')
+                .set('x-auth-token', token)
+                .send({
+                    customerId
+                });;
+
+            expect(res.status).toBe(400);
+        });
+
+        it('should return if no rental found on customer/movie', async() => {
+            await Rental.remove({});
+
+            const res = await exec();
+
+            expect(res.status).toBe(404);
+        });
     });
 });
