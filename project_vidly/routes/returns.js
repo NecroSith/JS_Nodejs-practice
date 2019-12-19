@@ -2,6 +2,7 @@ const express = require('express');
 const { Rental } = require('../models/rentals');
 const auth = require('../middleware/auth');
 const router = express.Router();
+const moment = require('moment');
 
 router.post('/', auth, async(req, res) => {
     if (!req.body.customerId) return res.status(400).send('CustomerId not provided');
@@ -16,6 +17,7 @@ router.post('/', auth, async(req, res) => {
     if (rental.dateReturned) return res.status(400).send('Rental already processed');
 
     rental.dateReturned = new Date();
+    rental.rentalFee = moment().diff(rental.dateOut, 'days') * rental.movie.dailyRentalRate;
 
     return res.status(200).send();
 });
