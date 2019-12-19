@@ -98,5 +98,22 @@ describe('/api/returns', () => {
 
             expect(res.status).toBe(400);
         });
+
+        it('should sset returnDate if input is valid', async() => {
+            const res = await exec();
+
+            const rentalinDb = await Rental.findById(rental._id);
+
+            // we need to check if the dateReturned is valid
+            // dateReturned should contain the date and time when the movie was returned
+            // but if we init date here to check it - it will already be different
+            // so we need to find the difference between the date we get here
+            // and the date we receive from rentals router
+            // and check if is more than, let's say, 10 seconds
+
+            const diff = new Date() - rentalinDb.dateReturned;
+
+            expect(diff).toBeLessThan(10000);
+        });
     });
 });
