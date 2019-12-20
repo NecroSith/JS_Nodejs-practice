@@ -9,6 +9,7 @@
 - **lodash** (for better managing arrays and objects)
 - **Fawn** (for creating a sequence of operations to make complex request to a db)
 - **mongoose** (for working with mongodb using express)
+- **moment** (for better date and time management)
 
 #### Validating data
 - **Joi** (for better validating data)
