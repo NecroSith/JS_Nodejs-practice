@@ -26,7 +26,7 @@ router.post('/', auth, async(req, res) => {
     rental.dateReturned = new Date();
     rental.rentalFee = moment().diff(rental.dateOut, 'days') * rental.movie.dailyRentalRate;
 
-    return res.status(200).send();
+    return res.status(200).send(rental);
 });
 
 module.exports = router;
