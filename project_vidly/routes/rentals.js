@@ -1,4 +1,5 @@
 const auth = require('../middleware/auth');
+const validateInput = require('../middleware/validate');
 const { Rental, validate } = require('../models/rentals');
 const { Movie } = require('../models/movies');
 const { Customer } = require('../models/customer');
@@ -15,12 +16,7 @@ router.get('/', async(req, res) => {
     res.send(rentals);
 });
 
-router.post('/', auth, async(req, res) => {
-    const { error } = validate(req.body);
-    if (error) {
-        return res.status(400).send(error.details);
-    }
-
+router.post('/', [auth, validateInput(validate)], async(req, res) => {
     const customer = await Customer.findById(req.body.customerId);
     // One way to handle incorrect ids is this
     // another way is to use Joi-objectid package

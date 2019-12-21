@@ -1,5 +1,6 @@
 const validateObjectid = require('../middleware/validateObjectId');
 const auth = require('../middleware/auth');
+const validateInput = require('../middleware/validate');
 const admin = require('../middleware/admin');
 const { Genre, validate } = require('../models/genres');
 const express = require('express');
@@ -31,12 +32,7 @@ router.get('/:id', validateObjectid, async(req, res) => {
 
 // Argument 2 is a middleware function
 // It is executed before the function itself
-router.post('/', auth, async(req, res) => {
-    const { error } = validate(req.body);
-    if (error) {
-        return res.status(400).send(error.details);
-    }
-
+router.post('/', [auth, validateInput(validate)], async(req, res) => {
     let genre = await new Genre({
         name: req.body.name
     });
@@ -46,12 +42,7 @@ router.post('/', auth, async(req, res) => {
 
 });
 
-router.put('/:id', auth, async(req, res) => {
-
-    const { error } = validate(req.body);
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    }
+router.put('/:id', [auth, validateInput(validate)], async(req, res) => {
 
     const genre = await Genre.findByIdAndUpdate(req.params.id, { name: req.body.name }, { new: true });
 
@@ -62,11 +53,7 @@ router.put('/:id', auth, async(req, res) => {
     res.send(genre);
 });
 
-router.delete('/:id', [auth, admin], async(req, res) => {
-    const { error } = validate(req.body);
-    if (error) {
-        return res.status(400).send(error.details[0].message);
-    };
+router.delete('/:id', [auth, admin, validateInput(validate)], async(req, res) => {
 
     const genre = await Genre.findByIdAndRemove(req.params.id);
 

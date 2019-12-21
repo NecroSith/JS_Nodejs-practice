@@ -1,20 +1,17 @@
 const bcrypt = require('bcryptjs');
 const auth = require('../middleware/auth');
+const validateInput = require('../middleware/validate');
 const _ = require('lodash');
 const { User, validate } = require('../models/users');
 const express = require('express');
 const router = express.Router();
 
-router.get('/me', auth, async(req, res) => {
+router.get('/me', [auth, validateInput(validate)], async(req, res) => {
     const user = await User.findById(req.user._id).select('-password');
     res.send(user);
 })
 
-router.post('/', async(req, res) => {
-    const { error } = validate(req.body);
-    if (error) {
-        return res.status(400).send(error.details);
-    }
+router.post('/', [auth, validateInput(validate)], async(req, res) => {
 
     let user = await User.findOne({ email: req.body.email });
 
