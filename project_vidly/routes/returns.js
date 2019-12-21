@@ -13,10 +13,19 @@ router.post('/', [auth, validate(validateInput)], async(req, res) => {
     if (!req.body.customerId) return res.status(400).send('CustomerId not provided');
     if (!req.body.movieId) return res.status(400).send('MovieId not provided');
 
-    const rental = await Rental.findOne({
-        'customer._id': req.body.customerId,
-        'movie._id': req.body.movieId
-    });
+    //! There are 2 type of methods
+    // Static and instance methods
+    // Static method is a method that is available directly on a class
+    // Instance medthod is a method that is available on an instance of a class
+
+    //* we don''t need this code since we do the same thing with static method of Rental class that we created
+    // const rental = await Rental.findOne({
+    //     'customer._id': req.body.customerId,
+    //     'movie._id': req.body.movieId
+    // });
+
+    //* we use this instead
+    const rental = await Rental.lookup(res.body.customerId, res.body.movieId);
 
     if (!rental) return res.status(404).send('Rental not found');
     if (rental.dateReturned) return res.status(400).send('Rental already processed');

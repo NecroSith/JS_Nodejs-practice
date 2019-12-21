@@ -70,8 +70,17 @@ const rentalsSchema = new mongoose.Schema({
     }
 });
 
-const Rental = mongoose.model('Rental', rentalsSchema);
+// here we create static methods of Rental class
+// statics method lets us create our own methods
+// we create lookup static method here
+rentalsSchema.statics.lookup = function(customerId, movieId) {
+    return this.findOne({
+        'customer._id': customerId,
+        'movie._id': movieId
+    });
+}
 
+const Rental = mongoose.model('Rental', rentalsSchema);
 // We validate only two values because
 // we don't want user to mess with dates -they must be set server-side
 function validateInput(input) {
