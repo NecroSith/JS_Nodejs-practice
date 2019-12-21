@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
+const moment = require('moment');
 
 // Here is the use of a special package of Joi
 // It's designed to validate object Ids
@@ -78,6 +79,13 @@ rentalsSchema.statics.lookup = function(customerId, movieId) {
         'customer._id': customerId,
         'movie._id': movieId
     });
+}
+
+// we create instance method here
+rentalsSchema.methods.return = function() {
+    this.dateReturned = new Date();
+    this.rentalFee = moment().diff(this.dateOut, 'days') * this.movie.dailyRentalRate;
+
 }
 
 const Rental = mongoose.model('Rental', rentalsSchema);
