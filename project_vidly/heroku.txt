@@ -12,3 +12,11 @@ To find logs in heroku there are 3 options
     Go to heroku.com and press "More" dropdown at the top right of the page with your project. There is a button to view logs there
 3) use heroku bash terminal
     To check files like uncaughtExceptions.log we can also open up terminal inside heroku dashboard. In the same dropdown as in the previous point there is "run terminal" button. Type "bash" there to open git bash. After this using "ls" and "cd" commands find the file and open it using "cat" command
+
+To set environmetal variables in heroku we need to type
+"heroku config:set <var-name>=<var_value>"
+
+e.g.
+heroku config:set vidly_jwtPrivateKey=12345
+or
+heroku config:set NODE_ENV=production
