@@ -1,0 +1,14 @@
+To Deploy a project in Heroku we need to:
+1) Go to heroku.com and create an account
+2) install heroku package globally
+3) launch "heroku login" command and enter the credentials
+4) There will be a new git remote. Now we can use git with this remote as we want. To deploy the app we need to git push it to the heroku origin via "git push heroku master"
+
+How to deal with 503 Service unavailable error or where to find logs?
+To find logs in heroku there are 3 options
+1) use terminal on the local machine
+    Type "heroku logs" to check logs
+2) use heroku dashboard
+    Go to heroku.com and press "More" dropdown at the top right of the page with your project. There is a button to view logs there
+3) use heroku bash terminal
+    To check files like uncaughtExceptions.log we can also open up terminal inside heroku dashboard. In the same dropdown as in the previous point there is "run terminal" button. Type "bash" there to open git bash. After this using "ls" and "cd" commands find the file and open it using "cat" command
