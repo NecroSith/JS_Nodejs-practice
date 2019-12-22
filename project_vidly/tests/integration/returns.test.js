@@ -59,9 +59,9 @@ describe('/api/returns', () => {
     });
 
     afterEach(async() => {
-        await server.close();
         await Rental.remove({});
         await Movie.remove({});
+        await server.close();
     });
 
     describe('POST /api/returns', async() => {
@@ -90,7 +90,7 @@ describe('/api/returns', () => {
             expect(res.status).toBe(400);
         });
 
-        it('should return if 404 no rental found on customer/movie', async() => {
+        it('should return 404 if no rental found on customer/movie', async() => {
             await Rental.remove({});
 
             const res = await exec();
