@@ -15,8 +15,10 @@ To find logs in heroku there are 3 options
 
 To set environmetal variables in heroku we need to type
 "heroku config:set <var-name>=<var_value>"
-
 e.g.
 heroku config:set vidly_jwtPrivateKey=12345
 or
 heroku config:set NODE_ENV=production
+
+To see all environmetal variables type
+"heroku config"
