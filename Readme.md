@@ -1,6 +1,7 @@
 # Node.js practice
 ### This is set of practical tasks and pet projects I made while completing the course "Nodejs: The complete guide to build RESTful APIs (2018)" on Udemy by Mosh Hamedani
 #### The main pet project is Vidly application which is a MongoDB database and fully working API
+### The app was deployed to Heroku, DB was deployed to MongoDBAtlas
 #### The app is loaded with my comments for better understanding stuff that's happening
 ### Tech stack for Vidly app:
 #### Main
@@ -11,6 +12,9 @@
 - **Fawn** (for creating a sequence of operations to make complex request to a db)
 - **mongoose** (for working with mongodb using express)
 - **moment** (for better date and time management)
+
+#### Production
+- **heroku** (for managing the project on heroku.com)
 
 #### Preparing for production
 - **helmet** (to protect the app from web vulnerabilities)
